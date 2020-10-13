@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -46,7 +47,14 @@ public class Usuario {
 	      	 inverseJoinColumns = @JoinColumn(name = "processos_id")
 	    )
 	 
-	    private List<Processo> processos;
+	private List<Processo> processos;
+	 
+	 
+	 @OneToMany
+	 @JoinColumn( name = "id_usuarios", referencedColumnName = "id")
+	 private List<Parecer> parecer;
+	 
+	 
 	public Long getId() {
 		return id;
 	}

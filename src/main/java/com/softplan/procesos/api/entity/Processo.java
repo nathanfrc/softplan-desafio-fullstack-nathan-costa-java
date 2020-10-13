@@ -3,13 +3,17 @@ package com.softplan.procesos.api.entity;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -29,7 +33,18 @@ public class Processo {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
 	private Date dataCriacao;
 	
-	    public Long getId() {
+	@OneToOne(cascade=CascadeType.ALL)
+	private Parecer parecer;
+	    public Parecer getParecer() {
+		return parecer;
+	}
+
+	public void setParecer(Parecer parecer) {
+		this.parecer = parecer;
+	}
+
+
+		public Long getId() {
 		return id;
 	}
 
