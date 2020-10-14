@@ -41,20 +41,8 @@ public class Parecer implements Serializable {
 	
 	private Long id;
 	private String descricao;
-	
-	/*@OneToMany
-	@JoinColumn(name = "usuarios_id")
-	private Usuario usuario;*/
-	
-	
-	/*public Usuario getUsuario() {
-		return usuario;
-	}
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}*/
-
+	
 
 	@Temporal(TemporalType.DATE)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
@@ -86,7 +74,6 @@ public class Parecer implements Serializable {
 	}
 
 	@Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
 	public Long getId() {
 		return id;
 	}

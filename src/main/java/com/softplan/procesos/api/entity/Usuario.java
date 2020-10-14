@@ -3,6 +3,7 @@ package com.softplan.procesos.api.entity;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -14,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -40,21 +42,29 @@ public class Usuario {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
 	private Date dataCriacao;
 	
+	@JsonIgnore
 	 @ManyToMany
 	    @JoinTable(
 	         name="processos_usuarios",
 	         joinColumns        = @JoinColumn(name = "usuarios_id"), 
 	      	 inverseJoinColumns = @JoinColumn(name = "processos_id")
 	    )
+	     private List<Processo> processos;
 	 
-	private List<Processo> processos;
+	    @JsonIgnore
+	    @OneToMany(cascade = CascadeType.ALL)
+		@JoinColumn( name = "usuarios_id", referencedColumnName = "id")
+		private List<Parecer> parecer;
 	 
-	 
-	 @OneToMany
-	 @JoinColumn( name = "id_usuarios", referencedColumnName = "id")
-	 private List<Parecer> parecer;
-	 
-	 
+
+	public List<Parecer> getParecer() {
+			return parecer;
+		}
+
+		public void setParecer(List<Parecer> parecer) {
+			this.parecer = parecer;
+		}
+
 	public Long getId() {
 		return id;
 	}
