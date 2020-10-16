@@ -9,14 +9,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.softplan.procesos.api.entity.Parecer;
 import com.softplan.procesos.api.entity.Processo;
 
 @Transactional(readOnly = true)
 @NamedQueries({
-	@NamedQuery(name = "ProcessoRepository.findByProcessoId", 
-			query = "SELECT p FROM Processo p WHERE p.id = :id") })
-public interface ParecerRepository extends JpaRepository<Processo, Long > {
+	@NamedQuery(name = "ParecerRepository.findByProcessoId", 
+			query = "SELECT p FROM Parecer p WHERE p.id = :id") })
+public interface ParecerRepository extends JpaRepository<Parecer, Long > {
 
-	Page<Processo> findById(Long id, Pageable paginacao);
+	Page<Parecer> findById(Long id, Pageable paginacao);
 
 }

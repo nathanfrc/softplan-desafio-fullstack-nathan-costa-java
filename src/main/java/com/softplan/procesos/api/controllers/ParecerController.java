@@ -1,6 +1,7 @@
 package com.softplan.procesos.api.controllers;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -23,13 +24,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.softplan.procesos.api.dto.ParecerDto;
 import com.softplan.procesos.api.dto.ProcessoDto;
+import com.softplan.procesos.api.entity.Parecer;
 import com.softplan.procesos.api.entity.Processo;
 import com.softplan.procesos.api.entity.ProcessoUsuario;
 import com.softplan.procesos.api.entity.Usuario;
 import com.softplan.procesos.api.response.Response;
 import com.softplan.procesos.api.service.ParecerService;
 import com.softplan.procesos.api.service.ProcessoService;
+import com.softplan.procesos.api.service.UsuarioService;
 
 @RestController
 @RequestMapping("/api/parecer")
@@ -41,24 +45,61 @@ public class ParecerController {
     @Autowired 
 	private ParecerService parecerService;
     
-   
+    @Autowired 
+	private ProcessoService processoService;
+    
+    @Autowired
+	private UsuarioService usuarioService;
+    
 	public ParecerController() {
 	}
 	
-	/*@GetMapping
-	@Cacheable(value = "findAll")
-	public Page<ProcessoUsuario>findAllPendentes(@PageableDefault(direction = Direction.DESC, page = 0, size = 10) Pageable paginacao) {
-		log.info(""
-				+ "busca de processo: {}");
-		@SuppressWarnings("unused")
-		Response<Processo> response = new Response<Processo>();
-		//Page<ProcessoUsuario> processos = parecerService.findAll(paginacao);
+
+	@PostMapping(value="/usuario/{idUsuario}/processo/{idProcesso}")
+	public ResponseEntity<Response<ParecerDto>> cadastrar(@Valid @RequestBody ParecerDto parecerDto,
+			BindingResult result, @PathVariable("idProcesso") Long idProcesso, @PathVariable("idUsuario") Long idUsuario) throws NoSuchAlgorithmException {
+		log.info("Cadastrando Psrecer: {}",parecerDto.toString());
+		Response<ParecerDto> response = new Response<ParecerDto>();
+		
+		log.info("log parecerDto"+parecerDto.toString());
+		
+		Parecer parecer = parecerDto.converterParecerDto(parecerDto,result);
+		
+		log.info("log parecerDto"+parecer.toString());
+		
+		if (result.hasErrors()) {
+			log.error("Erro validando dados de usuario: {}", result.getAllErrors());
+			result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
+			return ResponseEntity.badRequest().body(response);
+		}
+		
+		Optional<Usuario> usOptional = this.usuarioService.findById(idUsuario);
+
+		if (!usOptional.isPresent()) {
+			log.info("Usuário não existe");
+			response.getErrors().add("Usuário não existe");
+			return ResponseEntity.badRequest().body(response);
+		}
+		
+		Optional<Processo> processoOptional = this.processoService.findByIdProcesso(idProcesso);
+		
+		if (!processoOptional.isPresent()) {
+			log.info("Processo não existe");
+			response.getErrors().add("Processo não existe");
+			return ResponseEntity.badRequest().body(response);
+		}
+		
+		parecer.setUsuario(usOptional.get());
+		parecer.setProcesso(processoOptional.get());
 		
 		
-		Page<ProcessoUsuario> processos;
-		return processos;
-	}*/
+		
+		this.parecerService.salvar(parecer);
+		
+		return ResponseEntity.ok().build();
+	}
 	
 	
+
 	
 }

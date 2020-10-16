@@ -43,7 +43,7 @@ public class Processo {
 
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "processos_id", referencedColumnName = "id")
-	private List<Parecer> parecer = new ArrayList<>();
+	private Set<Parecer> parecer;
 	
 	  @JsonIgnore
 	  @OneToMany(mappedBy = "processo")
@@ -57,11 +57,11 @@ public class Processo {
 		this.processoUsuario = processoUsuario;
 	}
 
-	public List<Parecer> getParecer() {
+	public Set<Parecer> getParecer() {
 		return parecer;
 	}
 
-	public void setParecer(List<Parecer> parecer) {
+	public void setParecer(Set<Parecer> parecer) {
 		this.parecer = parecer;
 	}
 

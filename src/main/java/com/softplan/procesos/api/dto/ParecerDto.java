@@ -1,4 +1,4 @@
-package com.softplan.procesos.api.entity;
+package com.softplan.procesos.api.dto;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -27,67 +27,35 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
+import javax.validation.Valid;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.validation.BindingResult;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.softplan.procesos.api.entity.Parecer;
 
-@Entity
-@Table(name = "parecer")
-public class Parecer implements Serializable {
+
+public class ParecerDto implements Serializable {
 
 	private static final long serialVersionUID = -5754246207015712518L;
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	@Column(name = "descricao")
 	private String descricao;
-	
-	@ManyToOne
-	@JoinColumn(name = "usuarios_id")
-	private Usuario usuario;
-	
-	
-	@ManyToOne
-	@JoinColumn(name = "processos_id")
-	private Processo processo;
-	
-	public Usuario getUsuario() {
-		return usuario;
-	}
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
-
-	public Processo getProcesso() {
-		return processo;
-	}
-
-	public void setProcesso(Processo processo) {
-		this.processo = processo;
-	}
 
 	@Temporal(TemporalType.DATE)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
 	private Date dataCriacao;
 	
-	@Override
-	public String toString() {
-		return "Parecer [id=" + id + ", descricao=" + descricao + ", dataCriacao=" + dataCriacao + "]";
-	}
-
 	public String getDescricao() {
 		return descricao;
 	}
-
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
 
-	@Column(name = "data_criacao", nullable = false)
 	public Date getDataCriacao() {
 		return dataCriacao;
 	}
@@ -96,7 +64,7 @@ public class Parecer implements Serializable {
 		this.dataCriacao = dataCriacao;
 	}
 
-	public Parecer() {
+	public ParecerDto() {
 	}
 
 	
@@ -108,22 +76,20 @@ public class Parecer implements Serializable {
 		this.id = id;
 	}
 
-	
-/*
-public UsuarioDto converterUsuario(Processos usuario, BindingResult result) {
+	@Override
+	public String toString() {
+		return "ParecerDto [id=" + id + ", descricao=" + descricao + ", dataCriacao=" + dataCriacao + "]";
+	}
+
+	public Parecer converterParecerDto(@Valid ParecerDto parecerDto, BindingResult result) {
 		
-		UsuarioDto usuarioDto = new UsuarioDto();
-		usuarioDto.setId(usuario.getId());
-		usuarioDto.setEmail(usuario.getEmail());
-		usuarioDto.setNome(usuario.getNome());
-		usuarioDto.setSenha(usuario.getSenha().toString());
-		usuarioDto.setPerfil(usuario.getPerfil());
-		usuarioDto.setDataCriacao(usuario.getDataCriacao());
-	
-		return usuarioDto;
-	}*/
-
-
-
+		Parecer parecer = new Parecer();
+		
+		parecer.setDescricao(parecerDto.descricao);
+		parecer.setDataCriacao(new Date());
+		
+		return parecer;
+		
+	}
 	
 }
