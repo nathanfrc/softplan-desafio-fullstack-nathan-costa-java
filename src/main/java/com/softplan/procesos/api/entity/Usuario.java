@@ -20,8 +20,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.validation.BindingResult;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.softplan.procesos.api.dto.UsuarioDto;
 import com.softplan.procesos.api.enums.PerfilEnum;
 
 
@@ -128,6 +131,20 @@ public class Usuario {
 	public void setProcessos(List<Processo> processos) {
 		this.processos = processos;
 	}
+
+	public UsuarioDto converterUsuario(Usuario usuario, BindingResult result) {
+		
+		UsuarioDto usuarioDto = new UsuarioDto();
+		usuarioDto.setId(usuario.getId());
+		usuarioDto.setEmail(usuario.getEmail());
+		usuarioDto.setNome(usuario.getNome());
+		usuarioDto.setSenha(usuario.getSenha().toString());
+		usuarioDto.setPerfil(usuario.getPerfil());
+		usuarioDto.setDataCriacao(usuario.getDataCriacao());
+	
+		return usuarioDto;
+	}
+
 
 
 	

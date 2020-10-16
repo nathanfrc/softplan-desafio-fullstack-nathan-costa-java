@@ -1,5 +1,7 @@
 package com.softplan.procesos.api.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +18,20 @@ public class UsuarioService {
 
 	public Page<Usuario> findAll(Pageable paginacao) {
 		return this.usuarioRepository.findAll(paginacao); 
+	}
+
+	public Optional<Usuario> findById( Long id) {
+		return this.usuarioRepository.findById(id);
+	}
+
+	public Usuario persistir(Usuario usuario) {
+		return this.usuarioRepository.save(usuario);
+	}
+
+	
+	public Page<Usuario> findByIdUsuario(Pageable paginacao, Long id) {
+		// TODO Auto-generated method stub
+		return this.usuarioRepository.findById(id,paginacao);
 	}
 
 }
