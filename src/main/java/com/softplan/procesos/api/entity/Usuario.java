@@ -2,6 +2,7 @@ package com.softplan.procesos.api.entity;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -45,14 +46,19 @@ public class Usuario {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
 	private Date dataCriacao;
 	
-	@JsonIgnore
+	/*@JsonIgnore
 	 @ManyToMany
 	    @JoinTable(
 	         name="processos_usuarios",
 	         joinColumns        = @JoinColumn(name = "usuarios_id"), 
 	      	 inverseJoinColumns = @JoinColumn(name = "processos_id")
-	    )
-	     private List<Processo> processos;
+	    )*/
+	//private List<Processo> processos;
+	
+	      @JsonIgnore
+	      @OneToMany(mappedBy = "usuario")
+	      Set<ProcessoUsuario> processoUsuario;
+	      
 	 
 	    @JsonIgnore
 	    @OneToMany(cascade = CascadeType.ALL)
@@ -124,13 +130,13 @@ public class Usuario {
 		this.dataCriacao = dataCriacao;
 	}
 
-	public List<Processo> getProcessos() {
+	/*public List<Processo> getProcessos() {
 		return processos;
 	}
 
 	public void setProcessos(List<Processo> processos) {
 		this.processos = processos;
-	}
+	}*/
 
 	public UsuarioDto converterUsuario(Usuario usuario, BindingResult result) {
 		
@@ -143,6 +149,14 @@ public class Usuario {
 		usuarioDto.setDataCriacao(usuario.getDataCriacao());
 	
 		return usuarioDto;
+	}
+
+	public Set<ProcessoUsuario> getProcessoUsuario() {
+		return processoUsuario;
+	}
+
+	public void setProcessoUsuario(Set<ProcessoUsuario> processoUsuario) {
+		this.processoUsuario = processoUsuario;
 	}
 
 

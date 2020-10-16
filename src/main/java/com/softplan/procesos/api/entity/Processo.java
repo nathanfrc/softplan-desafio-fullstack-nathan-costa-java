@@ -3,6 +3,7 @@ package com.softplan.procesos.api.entity;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -20,8 +21,12 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.validation.BindingResult;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.softplan.procesos.api.dto.ProcessoDto;
 
 @Entity
 @Table(name = "processos")
@@ -35,57 +40,75 @@ public class Processo {
 	@Temporal(TemporalType.DATE)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
 	private Date dataCriacao;
-	
+
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn( name = "processos_id", referencedColumnName = "id")
+	@JoinColumn(name = "processos_id", referencedColumnName = "id")
 	private List<Parecer> parecer = new ArrayList<>();
-		public List<Parecer> getParecer() {
+	
+	  @JsonIgnore
+	  @OneToMany(mappedBy = "processo")
+      Set<ProcessoUsuario> processoUsuario;
+	
+	public Set<ProcessoUsuario> getProcessoUsuario() {
+		return processoUsuario;
+	}
+
+	public void setProcessoUsuario(Set<ProcessoUsuario> processoUsuario) {
+		this.processoUsuario = processoUsuario;
+	}
+
+	public List<Parecer> getParecer() {
 		return parecer;
 	}
 
 	public void setParecer(List<Parecer> parecer) {
 		this.parecer = parecer;
 	}
-		public Long getId() {
+
+	public Long getId() {
 		return id;
 	}
-
 
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-
 	public String getTitulo() {
 		return titulo;
 	}
-
 
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
 	}
 
-
 	public String getDescricao() {
 		return descricao;
 	}
-
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
 
-
 	public Date getDataCriacao() {
 		return dataCriacao;
 	}
-
 
 	public void setDataCriacao(Date dataCriacao) {
 		this.dataCriacao = dataCriacao;
 	}
 
-	
 	public Processo() {
+	}
+
+	public ProcessoDto converterProcessos(Processo pro, BindingResult result) {
+
+		ProcessoDto processoDto = new ProcessoDto();
+
+		processoDto.setId(pro.getId());
+		processoDto.setTitulo(pro.getTitulo());
+		processoDto.setDescricao(pro.getDescricao());
+		processoDto.setDataCriacao((pro.dataCriacao));
+
+		return processoDto;
 	}
 }

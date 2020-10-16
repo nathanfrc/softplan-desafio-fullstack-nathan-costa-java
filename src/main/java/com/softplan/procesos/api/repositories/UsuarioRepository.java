@@ -20,9 +20,7 @@ import com.softplan.procesos.api.entity.Usuario;
 			query = "SELECT us FROM Usuario us WHERE us.id = :usuarioId") })
 public interface UsuarioRepository extends JpaRepository<Usuario, Long > {
 
-	Usuario findByEmail(String email);
-	//Usuario findByUsuarioId(@Param("usuarioId") Long usuarioId);
+	Optional<Usuario> findByEmail(String email);
 
 	Page<Usuario> findById(Long id, Pageable paginacao);
-
 }

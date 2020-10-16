@@ -28,10 +28,18 @@ public class UsuarioService {
 		return this.usuarioRepository.save(usuario);
 	}
 
-	
 	public Page<Usuario> findByIdUsuario(Pageable paginacao, Long id) {
-		// TODO Auto-generated method stub
 		return this.usuarioRepository.findById(id,paginacao);
 	}
+
+	public Optional<Usuario> buscarPorEmail(String email) {
+		return this.usuarioRepository.findByEmail(email);
+	}
+
+	public void remover(Long id) {
+		this.usuarioRepository.deleteById(id);;
+		
+	}
+
 
 }

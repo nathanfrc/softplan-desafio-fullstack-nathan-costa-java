@@ -34,45 +34,44 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "parecer")
-public class Parecer implements Serializable {
+@Table(name = "processos_usuarios")
+public class ProcessoUsuario implements Serializable {
 
 	private static final long serialVersionUID = -5754246207015712518L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	private String descricao;
+	
+	@ManyToOne
+	@JoinColumn(name = "usuarios_id")
+	private Usuario usuario;
+	
+	@ManyToOne
+	@JoinColumn(name = "processos_id")
+	private Processo processo;
 
 	
-
-	@Temporal(TemporalType.DATE)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
-	private Date dataCriacao;
-	
-	@Override
-	public String toString() {
-		return "Parecer [id=" + id + ", descricao=" + descricao + ", dataCriacao=" + dataCriacao + "]";
+	public Usuario getUsarios() {
+		return usuario;
 	}
 
-	public String getDescricao() {
-		return descricao;
+
+	public void setUsarios(Usuario usarios) {
+		this.usuario = usarios;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+
+	public Processo getProcesso() {
+		return processo;
 	}
 
-	@Column(name = "data_criacao", nullable = false)
-	public Date getDataCriacao() {
-		return dataCriacao;
+
+	public void setProcesso(Processo processo) {
+		this.processo = processo;
 	}
 
-	public void setDataCriacao(Date dataCriacao) {
-		this.dataCriacao = dataCriacao;
-	}
-
-	public Parecer() {
+	public ProcessoUsuario() {
 	}
 
 	
@@ -85,21 +84,5 @@ public class Parecer implements Serializable {
 	}
 
 	
-/*
-public UsuarioDto converterUsuario(Processos usuario, BindingResult result) {
-		
-		UsuarioDto usuarioDto = new UsuarioDto();
-		usuarioDto.setId(usuario.getId());
-		usuarioDto.setEmail(usuario.getEmail());
-		usuarioDto.setNome(usuario.getNome());
-		usuarioDto.setSenha(usuario.getSenha().toString());
-		usuarioDto.setPerfil(usuario.getPerfil());
-		usuarioDto.setDataCriacao(usuario.getDataCriacao());
-	
-		return usuarioDto;
-	}*/
 
-
-
-	
 }

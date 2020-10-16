@@ -115,6 +115,47 @@ public Usuario converterUsuarioDto(UsuarioDto usuarioDto, BindingResult result) 
 		return usuario; 
 	}
 
-
+@SuppressWarnings("unused")
+public static Usuario mergeObjetos(UsuarioDto usuarioDto,Usuario usuario ) {
+	
+	final Usuario usuarioFinal = new Usuario();
+	
+	usuarioFinal.setId(usuario.getId());
+	
+	if(usuarioDto.getEmail()!=null) {
+		usuarioFinal.setEmail(usuarioDto.getEmail());
+	}else {
+		usuarioFinal.setEmail(usuario.getEmail());
+	}
+	
+	if(usuarioDto.getNome()!=null) {
+		usuarioFinal.setNome(usuarioDto.getNome());
+	}else {
+		usuarioFinal.setNome(usuario.getNome());
+	}
+	
+	if(usuarioDto.getSenha()!=null) {
+		
+		usuarioFinal.setSenha(PasswordUtils.gerarBCrypt(usuarioDto.getSenha()));
+		
+	}else {
+		usuarioFinal.setSenha(usuario.getSenha());
+	}
+	
+	if(usuarioDto.getPerfil()!=null) {
+		usuarioFinal.setPerfil(usuarioDto.getPerfil()); 
+	}else {
+		usuarioFinal.setPerfil(usuario.getPerfil());
+	}
+	
+	if(usuarioDto.getDataCriacao()!=null) {
+		usuarioFinal.setDataCriacao(usuarioDto.getDataCriacao()); 
+	}else {
+		usuarioFinal.setDataCriacao(usuario.getDataCriacao());
+	}
+	
+	return usuarioFinal;
+	
+}
 
 }
