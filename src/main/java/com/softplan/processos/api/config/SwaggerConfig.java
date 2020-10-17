@@ -1,5 +1,7 @@
 package com.softplan.processos.api.config;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,11 +9,16 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import com.softplan.processos.api.entity.Usuario;
+import com.softplan.processos.api.security.utils.JwtTokenUtil;
+
 //import com.processos.api.security.utils.JwtTokenUtil;
 
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -33,9 +40,20 @@ public class SwaggerConfig {
 	@Bean
 	public Docket api() {
 		return new Docket(DocumentationType.SWAGGER_2).select()
-				.apis(RequestHandlerSelectors.basePackage("com.softplan.processos.api.controllers"))
+				.apis(RequestHandlerSelectors.basePackage("com.softplan.processos.api"))
 				.paths(PathSelectors.any()).build()
-				.apiInfo(apiInfo());
+				//.apiInfo(apiInfo()
+						.ignoredParameterTypes(Usuario.class)
+		                .globalOperationParameters(
+		                        Arrays.asList(
+		                                new ParameterBuilder()
+		                                    .name("Authorization")
+		                                    .description("Header para Token JWT")
+		                                    .modelRef(new ModelRef("string"))
+		                                    .parameterType("header")
+		                                    .required(false)
+		                                    .build()	)	
+						);
 	}
 
 	private ApiInfo apiInfo() {

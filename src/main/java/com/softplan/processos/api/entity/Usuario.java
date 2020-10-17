@@ -110,8 +110,6 @@ public class Usuario {
 		this.senha = senha;
 	}
 
-	
-
 	@Column(name = "perfil", nullable = false)
 	public String getPerfil() {
 		return perfil;
