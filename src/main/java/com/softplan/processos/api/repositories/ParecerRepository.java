@@ -16,6 +16,7 @@ import com.softplan.processos.api.entity.Processo;
 @NamedQueries({
 	@NamedQuery(name = "ParecerRepository.findByProcessoId", 
 			query = "SELECT p FROM Parecer p WHERE p.id = :id") })
+
 public interface ParecerRepository extends JpaRepository<Parecer, Long > {
 
 	Page<Parecer> findById(Long id, Pageable paginacao);

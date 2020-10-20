@@ -60,17 +60,17 @@ public class AuthenticationController {
 	 * @throws AuthenticationException
 	 */
 	@PostMapping
-	public ResponseEntity<Response<TokenDto>> gerarTokenJwt(
+	public TokenDto gerarTokenJwt(
 			@Valid @RequestBody JwtAuthenticationDto authenticationDto, BindingResult result)
 			throws AuthenticationException {
 		log.info("Gerando token JWT.");
-		Response<TokenDto> response = new Response<TokenDto>();
+		//Response<TokenDto> response = new Response<TokenDto>();
 
-		if (result.hasErrors()) {
+		/*if (result.hasErrors()) {
 			log.error("Erro validando lançamento: {}", result.getAllErrors());
 			result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
 			return ResponseEntity.badRequest().body(response);
-		}
+		}*/
 
 		log.info("Gerando token para o email {}.", authenticationDto.getEmail());
 		Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
@@ -79,9 +79,10 @@ public class AuthenticationController {
 
 		UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationDto.getEmail());
 		String token = jwtTokenUtil.obterToken(userDetails);
-		response.setContent(new TokenDto(token));
-
-		return ResponseEntity.ok(response);
+		
+		
+		return new TokenDto(token);
+		
 	}
 
 	/**

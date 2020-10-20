@@ -1,5 +1,6 @@
 package com.softplan.processos.api.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,10 @@ public class UsuarioService {
 	public void remover(Long id) {
 		this.usuarioRepository.deleteById(id);;
 		
+	}
+
+	public List<Usuario> findAll2() {
+		return this.usuarioRepository.findAll();
 	}
 
 
