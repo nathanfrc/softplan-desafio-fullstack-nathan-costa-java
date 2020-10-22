@@ -41,6 +41,7 @@ public class Processo {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
 	private Date dataCriacao;
 
+	@JsonIgnore
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "processos_id", referencedColumnName = "id")
 	private Set<Parecer> parecer;

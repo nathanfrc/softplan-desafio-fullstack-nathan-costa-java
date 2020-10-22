@@ -45,7 +45,7 @@ public class ProcessoController {
 	
 	
 	@GetMapping(value="/pendentes")
-	@Cacheable(value = "findAllPendente")
+	//@Cacheable(value = "findAllPendente")
 	public Page<Processo>findAllPendente(@PageableDefault(direction = Direction.DESC, page = 0, size = 10) Pageable paginacao) {
 		log.info(""
 				+ "busca de processo: {}");
@@ -56,16 +56,11 @@ public class ProcessoController {
 	}
 	
 	
-	
-	
 	@GetMapping
-	@Cacheable(value = "findAll")
-	public Page<Processo>findAll(@PageableDefault(direction = Direction.DESC, page = 0, size = 10) Pageable paginacao) {
-		log.info(""
-				+ "busca de processo: {}");
-		@SuppressWarnings("unused")
-		Response<Processo> response = new Response<Processo>();
-		Page<Processo> processos = processoService.findAll(paginacao);
+	//@Cacheable(value = "findAll")
+	public Page<Processo>findAllProcessos(@PageableDefault(direction = Direction.DESC, page = 0, size = 10) Pageable paginacao) {
+		log.info(""+ "busca de processo: {}");
+		Page<Processo> processos = processoService.findAllProcess(paginacao);
 		return processos;
 	}
 	

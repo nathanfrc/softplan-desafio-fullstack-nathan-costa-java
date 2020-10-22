@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -63,14 +64,22 @@ public class UsuarioController {
 
 	@GetMapping
 	//@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-	public Page<Usuario> findAll(@PageableDefault(direction = Direction.DESC, page = 0, size = 10) Pageable paginacao) {
+	public Page<Usuario> findAll(@PageableDefault(direction = Direction.DESC, page = 0, size = 10) Pageable paginacao,
+			 @RequestParam(value = "email", defaultValue = "") String email) {
+		
+		if(!email.isEmpty()) {
+			log.info("Opss! email vazio");
+			Page<Usuario> usuarios = usuarioService.buscarPorEmailPage(email,paginacao);
+			return usuarios;
+		}
+		
 		Page<Usuario> usuarios = usuarioService.findAll(paginacao);
 		return usuarios;
 	}
 	
-	
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	//@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	//@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	@GetMapping(value="/{id}")
 	public Page<Usuario> buscaUser(@PageableDefault(direction = Direction.DESC, page = 0, size = 10) Pageable paginacao,
 			@PathVariable("id") Long id) {
 		Page<Usuario> usuario = usuarioService.findByIdUsuario(paginacao, id);
@@ -85,6 +94,7 @@ public class UsuarioController {
 		Response<UsuarioDto> response = new Response<UsuarioDto>();
 
 		try {
+			
 			Usuario usuario = usuarioDto.converterUsuarioDto(usuarioDto, result);
 
 			Optional<Usuario> usOptional = this.usuarioService.buscarPorEmail(usuario.getEmail());
@@ -158,7 +168,7 @@ public class UsuarioController {
 	 * Atribuir um processo ao usuario
 	 */
 	@SuppressWarnings("null")
-	//@PostMapping(value = "/{id}/processo/{idProcesso}")
+	@PostMapping(value = "/{id}/processo/{idProcesso}")
 	public ResponseEntity<Response<UsuarioDto>> atribuirProcesso(
 			@PathVariable("id") Long idUser,@PathVariable("idProcesso") Long idProcesso )  {
 		Response<UsuarioDto> response = new Response<UsuarioDto>();

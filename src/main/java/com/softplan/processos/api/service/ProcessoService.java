@@ -25,7 +25,7 @@ public class ProcessoService {
 		return this.processoRepository.save(processos);
 	}
 
-	public Page<Processo> findAll(Pageable paginacao) {
+	public Page<Processo> findAllProcess(Pageable paginacao) {
 		return this.processoRepository.findAll(paginacao);
 	}
 

@@ -33,6 +33,10 @@ public class UsuarioService {
 		return this.usuarioRepository.findById(id,paginacao);
 	}
 
+	public Page<Usuario> buscarPorEmailPage(String email,Pageable paginacao) {
+		return this.usuarioRepository.findByEmailPage(email,paginacao);
+	}
+	
 	public Optional<Usuario> buscarPorEmail(String email) {
 		return this.usuarioRepository.findByEmail(email);
 	}

@@ -17,6 +17,8 @@ import com.softplan.processos.api.entity.Processo;
 	@NamedQuery(name = "ProcessoRepository.buscarProcessosPendentesPaginacao",  
 			query = "SELECT p FROM Processo p ") })
 public interface ProcessoRepository extends JpaRepository<Processo, Long > {
+	
+	Page<Processo> findAll(Pageable paginacao);
 
 	Page<Processo> findById(Long id, Pageable paginacao);
 
